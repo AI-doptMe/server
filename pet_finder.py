@@ -52,10 +52,11 @@ def petFinder(image_url):
         contactCity = jsonData['petfinder']['pets']['pet'][index]['contact']['city']
         petMedia = jsonData['petfinder']['pets']['pet'][index]['media']['photos']['photo']
         for pict in petMedia:
-            if pict['@size'] is 'x':
+            print pict
+            if pict['@size'] == 'x':
                 largeImage = pict['#text']
-                break;
-            if pict['@size'] is 'pn':
+                break
+            if pict['@size'] == 'pn':
                 largeImage = pict['#text']
                 break;
             largeImage = pict['#text']
