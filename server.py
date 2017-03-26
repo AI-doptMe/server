@@ -3,7 +3,6 @@ import time
 from pet_finder import *
 import requests
 import hashlib
-import xmltodict
 import json
 import os
 from werkzeug.utils import secure_filename
@@ -31,10 +30,15 @@ def imageUpload():
         filename = secure_filename(fn[0]) + '_' + str(int(time.time())) + '.' + fn[1]
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         image_path = url_for('uploaded_file', filename=filename)
+        #TODO
+        print "petfinder"
+        pets = petFinderAPI(image_path)
+
         print image_path
         return jsonify({
             'status': 200,
             'message': "Welcome to NeuroKnight's Backend API",
+            'data' : pets,
             'location': image_path
         })
 
@@ -45,14 +49,8 @@ def uploaded_file(filename):
 #work in progress
 @app.route("/petFinder")
 def petFinderAPI():
-    data = json.dumps(xmltodict.parse(petFinder()))
-    jsonData = json.loads(data)
-    print jsonData['petfinder']['pets']['pet'][0]['breeds']
-    for index in range(20):
-        print jsonData['petfinder']['pets']['pet'][index].get('name')
-        print jsonData['petfinder']['pets']['pet'][index]['breeds']['breed']
-        #print jsonData['petfinder']['pets']['pet'][index]
-    return data
+    return petFinder('http://www.yourpurebredpuppy.com/dogbreeds/photos-CD/chihuahuasf1.jpg');
+
 
 if __name__ == "__main__":
     app.run()
