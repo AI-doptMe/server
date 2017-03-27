@@ -5,6 +5,7 @@ import json
 import pprint
 from flask import jsonify
 from clarifai_api import *
+from ConfigParser import SafeConfigParser
 
 def petFinder(image_url):
     color = ['White','black','Brown','tan']
@@ -26,17 +27,17 @@ def petFinder(image_url):
             topBreed = concept['id']
             break
 
-    print topColor
-    print topBreed
-
+    config = SafeConfigParser()
+    config.read('config.ini')
 
     #CONFIGS
+    apikey2 = config.get('Petfinder','apikey')
+    apisecret2 = config.get('Petfinder','apisecret')
     apiKey = "a3c7ab98952cd4109db691674901ac59"
     apiSecret="dc72e05d6cb02cbed2aff439111eea77"
     apiCombine = apiSecret+"key="+apiKey
     hashMD5 = hashlib.md5(apiCombine).hexdigest()
     petURL ="http://api.petfinder.com/pet.find?location=33193&animal=dog&breed="+topBreed+"&count=10&key="+apiKey
-    print(petURL)
 
     #WEB REQUETS
     petInfo = requests.get(petURL).text
@@ -60,12 +61,7 @@ def petFinder(image_url):
                 largeImage = pict['#text']
                 break;
             largeImage = pict['#text']
-        print largeImage
-        print name
-        print breed
-        print contactEmail
-        print contactPhone
-        print contactCity
+
         returnList.append({
             'name':name,
             'imageURL':largeImage,

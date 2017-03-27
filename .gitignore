@@ -1,3 +1,3 @@
-.DS_Store
-uploads
-*.pyc
+config.ini
+server.pyc
+pet_finder.pyc
